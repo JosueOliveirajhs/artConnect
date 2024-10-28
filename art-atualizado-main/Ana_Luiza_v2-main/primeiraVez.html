@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.1/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="../img/logo2.png" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.1/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="cadastro.css">
+    <title>Login ArtConnect</title>
+</head>
+<body>
+    <main class="container">
+        <form id="loginForm" onsubmit="PrimeiroLogin(event)">
+            <h1> ArtConnect</h1>
+            <div class="input-box">
+                <input type="text" id="loginIdentidade" placeholder="Usuário ou Email" required>
+                <i class="bx bxs-user"></i>
+            </div>
+            <div class="input-box">
+                <input type="password" id="senha1" placeholder="Senha" required>
+                <i class="bx bxs-lock-alt"></i>
+            </div>
+            <div class="remember-forgot">
+                <label>
+                    <input type="checkbox" id="mostrarSenha"> Mostrar Senha
+                </label>
+                <a href="#">Esqueci a Senha</a>
+            </div>
+            <button type="submit" class="login">Login</button>
+            <div class="register-link">
+                <p>Não tem uma conta? <a href="login.html">Cadastre-se</a></p>
+            </div>
+        </form>
+    </main>
+    <script>
+        // Função para alternar a visibilidade da senha
+        document.getElementById('mostrarSenha').addEventListener('change', function () {
+            const senhaInput = document.getElementById('senha1');
+            if (this.checked) {
+                senhaInput.type = 'text';
+            } else {
+                senhaInput.type = 'password';
+            }
+        });
+
+        function PrimeiroLogin(event) {
+    event.preventDefault(); // Previne o envio do formulário
+
+    const loginIdentidade = document.getElementById('loginIdentidade').value;
+    const senha1 = document.getElementById('senha1').value;
+
+    if (loginIdentidade && senha1) {
+        fetch('login.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `loginIdentidade=${encodeURIComponent(loginIdentidade)}&senha=${encodeURIComponent(senha1)}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); // Verifique se o "data" está retornando corretamente
+
+            if (data.status === 'success') {
+                // Salva os dados do usuário no localStorage
+                localStorage.setItem('usuario', JSON.stringify({
+                    usuario: data.usuario, // Pode ser o nome ou outro campo de identificação
+                    id: data.id, // Email do usuário
+                    tipo_usuario: data.tipo_usuario // Tipo do usuário (comum, artista, empresa)
+                }));
+
+                Swal.fire("Bom trabalho!", data.message, "success").then(() => {
+                    if (data.tipo_usuario === 'comum') {
+                        window.location.href = "../galeria/galeria_geral.html";
+                    } else if (data.tipo_usuario === 'artista' || data.tipo_usuario === 'empresa') {
+                        window.location.href = "../galeria/galeria.html";
+                    } else {
+                        window.location.href = "../galeria/default_galeria.html";
+                    }
+                });
+            } else {
+                Swal.fire("Erro!", data.message, "error");
+            }
+        })
+        .catch(error => {
+            console.log(error); // Verifique se há algum erro
+            Swal.fire("Erro!", "Ocorreu um erro ao logar.", "error");
+        });
+    } else {
+        Swal.fire("Atenção!", "Por favor, preencha todos os campos corretamente.", "warning");
+    }
+}
+
+    </script>
+</body>
+</html>

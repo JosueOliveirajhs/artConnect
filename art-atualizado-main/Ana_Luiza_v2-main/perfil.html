@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://kit.fontawesome.com/1c77068e3f.js" crossorigin="anonymous"></script>
+<link rel="shortcut icon" href="./img/logo2.png" type="image/x-icon">
+<title>ArtConnect Profile</title>
+</head>
+<body>
+<div class="container">
+    <aside class="sidebar">
+        <div class="profile">
+            <img src="./img/user-pic.jpg" alt="Profile Image">
+            <h2>Seu Nome</h2>
+        </div>
+        <nav class="menu">
+            <a href="#">Profile</a>
+            <a href="#">Acessibilidade</a>
+            <a href="ajuda.html">Ajuda</a>
+            <a href="index2.html">Voltar para Home</a>
+            <a href="#index.html">LogOut</a>
+        </nav>
+    </aside>
+    <main class="main-content">
+        <div class="profile-details">
+            <h1>Perfil</h1>
+            <div class="progress-bar">
+                <div class="progress" style="width: 75%;"></div>
+            </div>
+            <form>
+                <label for="name">Nome</label>
+                <input type="text" id="name" value="" placeholder="Digite seu nome">
+               
+                <label for="username">Usuário</label>
+                <input type="text" id="username" value="" placeholder="Digite seu nome de usuário">
+               
+                <label for="email">Email</label>
+                <input type="email" id="email" value="" placeholder="Digite seu email">
+               
+                <label for="type-user">Tipo de Usuário</label>
+                <input type="text" id="type-user" value="" placeholder="Digite seu tipo de usuário">
+               
+                <label for="bio">Bio</label>
+                <textarea id="bio" maxlength="200" placeholder="Fale sobre você aqui"></textarea>
+               
+                <button type="submit">Save Changes</button>
+            </form>
+        </div>
+    </main>
+</div>
+<style>
+    :root{
+        --azul: #191940;
+        --vermelho: #060f46;
+        --verde: #435863;
+        --branco-gelo: #e6d0bdd2;
+        --branco-creme: #f6ebe2;
+        --preto:#333;
+    }
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        /* border: none; */
+        outline: none;
+        font-family: 'work sans', sans-serif;
+        text-decoration: none;
+        text-transform: none;
+        font-style: normal;
+        transition: all 0.5s ease-in;
+        scroll-behavior: smooth;
+        scroll-padding-top: 16vh;
+    }
+    html {
+        font-size: 62.5%;
+        overflow-x: hidden;
+    }
+    body {
+        background-color: var(--branco-gelo);
+    }
+    .container {
+        background-color: #435863;
+        background-image: url();
+        display: flex;
+        height: 100vh;
+       
+    
+    }
+    .sidebar {
+        /* box-sizing: border-box; */
+        border-radius: 20px 0px 0px 20px;
+        margin-left: 30rem;
+        margin-top: 5rem;
+        margin-bottom: 5rem;
+        background-color:  #f6ebe2;
+        width: 250px;
+        padding: 20px;
+    }
+    .profile h2{
+        font-family: 'work sans', sans-serif;
+        font-weight: bold;
+        font-size: 2rem;
+        color: var(--azul);
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        margin-left: 5rem;
+    }
+    .profile img {
+        width: 10rem;
+        height: 10rem;
+        border-radius: 50%;
+        display: block;
+        margin: 0 auto;
+    }
+    
+    .menu a {
+        display: block;
+        font-family: 'work sans', sans-serif;
+        font-weight: lighter;
+        color: var(--azul);
+        padding: 10px;
+        font-size: 1.7em;
+        text-decoration: none;
+    }
+    
+    .main-content {
+        border-radius: 0px 20px 20px 0px;
+        box-sizing: border-box;
+        margin-right: 30rem;
+        margin-top: 5rem;
+        margin-bottom: 5rem;
+        border-right: 1px solid #ccc;
+        flex-grow: 1;
+        padding: 10px;
+        background-color: #fff;
+    }
+    
+    .profile-details h1 {
+        color: var(--azul);
+    }
+    
+    .progress-bar {
+        background-color: #eee;
+        border-radius: 5px;
+        margin: 10px 0;
+    }
+    
+    .progress {
+        background-color:#191940;
+        height: 10px;
+        border-radius: 5px;
+    }
+    
+    form label {
+        display: block;
+        margin-top: 1.2rem;
+        font-size: 1.25rem;
+    }
+    
+    form input, form textarea {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        border: none;
+        background-color: #e6d0bdd2 ;
+        color: #333;
+    }
+    form input:focus, 
+    textarea:focus{
+    outline: none;
+    box-shadow: 0 0 8px #bbb;
+    }
+    form button {
+        display: inline-block;
+        font-size: 1.2rem;
+        background-color: #191940;
+        border: none;
+        padding: 0.8rem 2.5rem;
+        border-radius: 20px;
+        margin-top: 1rem;
+        cursor: pointer;
+        color: white;
+    }
+    form button:hover {
+        color: #fff;
+        background-color: #435863;
+        border: 1px solid #435863;
+    }
+    /* Responsividade */
+    @media (max-width: 768px) {
+        .container {
+            flex-direction: column;
+            align-items: center;
+        }
+        .sidebar, .main-content {
+            margin: 1rem;
+            width: 90%;
+        }
+        .sidebar {
+            border-radius: 20px;
+        }
+        .main-content {
+            border-radius: 20px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .profile h2 {
+            font-size: 1.6rem;
+        }
+        .menu a {
+            font-size: 1.2rem;
+        }
+        .main-content, .sidebar {
+            padding: 10px;
+        }
+        form label {
+            font-size: 1rem;
+        }
+    }
+    </style>
+<script src="perfil.js"></script>
+</body>
+</html>

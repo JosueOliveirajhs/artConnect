@@ -1,0 +1,228 @@
+<!DOCTYPE html> 
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/1c77068e3f.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="../img/logo2.png" type="image/x-icon">
+    <title>ArtConnect Pagamento</title>
+</head>
+<body>
+    <button id="dark-mode-toggle"><i class="fa-solid fa-moon"></i></button>
+    <a href="../index.html" class="home-btn"><i class="fa-solid fa-house"></i></a>
+
+    <div class="container">
+        <form action="" method="post">
+            <div class="row">
+                <div class="column">
+                    <h3 class="title">Dados do Usuário</h3>
+                    <div class="input-box">
+                        <span>Nome Completo</span>
+                        <input type="text" placeholder="Digite seu nome completo">
+                    </div>
+                    <div class="input-box">
+                        <span>Email</span>
+                        <input type="email" placeholder="Digite seu email">
+                    </div>
+                    <div class="input-box">
+                        <span>CPF</span>
+                        <input type="number" placeholder="Digite seu CPF">
+                    </div>
+                    <div class="input-box">
+                        <span>Telefone</span>
+                        <input type="number" placeholder="Digite seu telefone">
+                    </div>
+                    <div class="input-box">
+                        <span>CEP</span>
+                        <input type="number" placeholder="Digite seu CEP">
+                    </div>
+                </div>
+                <div class="column">
+                    <h3 class="title">Pagamento</h3>
+                    <div class="input-box">
+                        <span>Cartões Aceitos</span>
+                        <img src="../img/cartoes.png" alt="">
+                    </div>
+                    <div class="input-box">
+                        <span>Nome no Cartão</span>
+                        <input type="text" placeholder="Digite o nome que está no cartão">
+                    </div>
+                    <div class="input-box">
+                        <span>Número do Cartão</span>
+                        <input type="number" placeholder="Digite o número que está no cartão">
+                    </div>
+                    <div class="input-box">
+                        <span>Data de Validade</span>
+                        <input type="month">
+                    </div>
+                    <div class="input-box">
+                        <span>CVV</span>
+                        <input type="number" placeholder="Digite o código de verificação">
+                    </div>
+                </div>
+            </div>
+            <a class="btn" href="../index2.html">Enviar</a>
+            <!-- <button  href="../index2.html" type="submit" class="btn" >Enviar</button> -->
+        </form>
+    </div>
+
+    <style>
+        :root {
+            --azul: #191940;
+            --vermelho: #060f46;
+            --verde: #435863;
+            --branco-gelo: #e6d0bdd2;
+            --branco-creme: #f6ebe2;
+            --preto: #333;
+            --fundo-claro: #f6ebe2;
+            --fundo-escuro: #121212;
+            --texto-claro: #333;
+            --texto-escuro: #f6ebe2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'work sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--fundo-claro);
+            color: var(--texto-claro);
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: var(--branco-creme);
+            background-image: url(../img/bg-outrascoisas.jpg);
+            background-size: cover;
+            padding: 25px;
+        }
+
+        .container form {
+            width: 700px;
+            padding: 40px;
+            background: #69a0ece8;
+            border-radius: 10px;
+        }
+
+        form .row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .row .column {
+            flex: 1 1 250px;
+        }
+
+        .column .title {
+            font-size: 20px;
+            color: var(--branco-creme);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .column .input-box {
+            margin: 15px 0;
+        }
+
+        .input-box span {
+            display: block;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .input-box img {
+            height: 32px;
+            width: 13rem;
+            margin-top: 5px;
+        }
+
+        .btn {
+            display: flex;
+            justify-content: center;
+            width: 38.5rem;
+            padding: 12px;
+            background: var(--branco-creme);
+            border: none;
+            outline: none;
+            border-radius: 20em;
+            font-size: 17px;
+            color: #333;
+            margin-top: 5px;
+            cursor: pointer;
+            transition: 0.5s;
+            text-decoration: none;
+        }
+
+        .home-btn{
+        position: fixed;
+        bottom: 20px;
+        right: 100px;
+        padding: 10px 20px;
+        background-color: var(--azul);
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+        /* Estilos para o modo noturno */
+        body.dark-mode {
+            background-color: var(--fundo-escuro);
+            color: var(--texto-escuro);
+        }
+
+        body.dark-mode .container {
+            background-color: var(--fundo-escuro);
+            background-image: none;
+        }
+
+        body.dark-mode .container form {
+            background-color: var(--preto);
+        }
+
+        body.dark-mode .column .title,
+        body.dark-mode .input-box span {
+            color: var(--texto-escuro);
+        }
+
+        body.dark-mode .input-box input {
+            background-color: var(--texto-claro);
+            color: var(--preto);
+        }
+
+        #dark-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: var(--azul);
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+
+    <script>
+        const toggleButton = document.getElementById('dark-mode-toggle');
+        toggleButton.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+    </script>
+</body>
+</html>
