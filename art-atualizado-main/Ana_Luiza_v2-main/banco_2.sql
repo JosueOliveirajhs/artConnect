@@ -5,7 +5,8 @@ use artconnect;
 CREATE TABLE imagens (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome_arquivo VARCHAR(255) NOT NULL,
-    caminho VARCHAR(255) NOT NULL
+    caminho VARCHAR(255) NOT NULL,
+	descricao TEXT
 );
 
 CREATE TABLE usuarios (
@@ -81,21 +82,29 @@ CREATE TABLE mensagens_contato (
     mensagem TEXT NOT NULL,
     data_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+CREATE TABLE chat_messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(50) NOT NULL,
+    mensagem TEXT NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 
 select * from empresa;
 
 
 drop database artconnect;
-select * from artista;
+
 drop table empresa;
-select * from usuarios;
+select * from chat_messages;
 select * from posts; 
 select * from curtidas; 
 select * from comentarios;
 select * from mensagens_contato;
+select * from imagens;
 drop table usuarios;
 drop table posts;
+drop table imagens;
 drop table mensagens_contato;
 select * from artista;
 drop table empresa;

@@ -243,7 +243,18 @@ window.onclick = function(event) {
   }
 }
       
- 
+  // Saudação de boas-vindas com SweetAlert2
+  document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                title: 'Bem-vindo(a) ao ArtConnect!',
+                text: 'Explore e valorize a arte independente!',
+                icon: 'success',
+                confirmButtonText: 'Vamos começar!',
+                background: '#f6ebe2', // Cor de fundo do alerta
+                color: '#191940',       // Cor do texto
+                confirmButtonColor: '#435863', // Cor do botão de confirmação
+            });
+        });
     </script>
     <style>
         :root{
