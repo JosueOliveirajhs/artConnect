@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/1c77068e3f.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="img/logo2.png" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="mural.css">
+    <title>ArteConnect Mural</title>
+</head>
+<body>
+    <header class="header">
+        <a href="" class="logo"><img src="img/logo3.png" /></a>
+        <nav class="navbar">
+           <a href="./index2.php">Home</a>
+           <a><button onclick="irParaGaleria()">Galeria</button></a>
+           <a href="#mural">Calendário</a>
+           <a href="./planos/planos.html">Planos</a>
+           <a><button onclick="irParaAbout()">About us</button></a>
+           <a><button onclick="irParaContato()">Contato</button></a>
+
+        <div class="icons">
+           <div class="menu-icon"><i class="fa-solid fa-bars"></i></div>
+           <button id="dark-mode-toggle" class="icon-btn"><i class="fa-solid fa-moon"></i></button>
+        </div>
+    </header>
+    <div class="container">
+        <h1>Eventos de Arte</h1>
+        <div id="evento-list" class="eventos-container"></div>
+    </div>
+    <footer class="footer">
+        <div class="credits">
+            created by <span> &copy; 2024 ArteConnect</span> | all rights reserved.
+        </div>
+    </footer>
+    <script>
+
+
+     function irParaGaleria() {
+            window.location.href = './Galeria/exibir2.php';
+        }
+
+        function irParaAbout() {
+            window.location.href = './index2.php#aboutus';
+        }
+
+        function irParaContato() {
+            window.location.href = './index2.php#contact';
+        }
+
+           function loadEventos() { 
+    fetch('get_eventos.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'error') {
+                Swal.fire('Erro', data.message, 'error');
+                window.location.href = 'login.php'; 
+            } else if (data.status === 'success') {
+                const eventoList = document.getElementById('evento-list');
+                eventoList.innerHTML = ''; 
+
+                // Exibe todos os eventos
+                data.eventos.forEach(evento => {
+                    const eventoItem = document.createElement('div');
+                    eventoItem.classList.add('evento-item');
+                    eventoItem.innerHTML = `
+                        <div class="evento">
+                            <div class="evento-img">
+                                <img src="${evento.imagem_evento}" alt="${evento.nome_evento}">
+                            </div>
+                            <div class="evento-info">
+                                <h2>${evento.nome_evento}</h2>
+                                <p><strong>Data:</strong> ${evento.data_evento}</p>
+                                <p><strong>Local:</strong> ${evento.local_evento}</p>
+                                <p><strong>Horário:</strong> ${evento.horario}</p>
+                                <p>${evento.descricao_evento}</p>
+                            </div>
+                            ${evento.pode_deletar ? `
+                            <div class="delete-icon-container">
+                                <button class="delete-btn" onclick="deletarEvento(${evento.id})">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                            ` : ''}
+                        </div>
+                    `;
+                    eventoList.appendChild(eventoItem);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao carregar eventos:', error);
+        });
+}
+
+
+
+function deletarEvento(id) {
+    Swal.fire({
+        title: 'Você tem certeza?',
+        text: "Esta ação não pode ser desfeita!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Deletar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch('deletar_evento.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id_evento: id }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    Swal.fire('Deletado!', 'O evento foi deletado.', 'success');
+                    loadEventos();
+                } else {
+                    Swal.fire('Erro!', data.message, 'error');
+                }
+            })
+            .catch(error => {
+                Swal.fire('Erro!', 'Ocorreu um erro ao deletar o evento.', 'error');
+            });
+        }
+    });
+}
+        window.onload = loadEventos;
+
+    </script>
+</body>
+</html> 

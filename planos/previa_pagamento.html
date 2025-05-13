@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/1c77068e3f.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="../img/logo2.png" type="image/x-icon">
+    <title>ArtConnect Planos</title>
+</head>
+<body>
+    
+    <button id="dark-mode-toggle"><i class="fa-solid fa-moon"></i></button>
+    <a href="../index.php" class="home-btn"><i class="fa-solid fa-house"></i></a>
+    <div class="wrapper">
+        <div class="single-price">
+            <h1>Artista Básico</h1>
+            <div class="price">
+                <h2>R$19,90 <br> /mês</h2>
+            </div>
+            <div class="deals">
+                <h4> Destaque nas bucas de até 10 obras na plataforma.</h4>
+                <h4> Acesso a análises básicas de visualizações e curtidas.</h4>
+                <h4> Suporte por e-mail.</h4>
+                <h4> Participação em eventos online promovidos pela plataforma.</h4>
+                <h4> Redução da taxa de venda para 20%</h4>
+            </div>
+            <p></p>
+            <span>Faça Login para realizar qualquer pagamento <p></p>
+            </span>
+        </div>
+
+        <div class="single-price">
+            <h1>Artista Profissional</h1>
+            <div class="price">
+                <h2>R$39,90 <br> /mês</h2>
+            </div>
+            <div class="deals">
+                <h4>Destaque nas buscas de até 50 obras na plataforma.</h4>
+                <h4>Acesso a análises completas de vendas, visualizações e engajamento.</h4>
+                <h4>Participação em eventos e exposições virtuais organizadas pela plataforma.</h4>
+                <h4>Suporte prioritário por e-mail </h4>
+                <h4>Redução da taxa de venda para 15%</h4>
+            </div>
+            <p></p>
+            <span>Faça Login para realizar qualquer pagamento <p></p>
+            </span>
+        </div>
+
+        <div class="single-price">
+            <h1>Empresarial</h1>
+            <div class="price">
+                <h2>R$129,90 <br>/mês</h2>
+            </div>
+            <div class="deals">
+                <h4>Divulgação de até 100 obras por mês, com atualizações frequentes.</h4>
+                <h4>Prioridade em campanhas de marketing da plataforma.</h4>
+                <h4>Participação em exposições exclusivas.</h4>
+                <h4>Suporte VIP com atendimento dedicado.</h4>
+                <h4>Descontos para grandes eventos e feiras de arte organizados pela plataforma ou parceiros.</h4>
+            </div>
+            <p></p>
+            <span>Faça Login para realizar qualquer pagamento <p></p>
+            </span>
+        </div>
+    </div>
+
+    <style>
+    :root {
+        --azul: #191940;
+        --vermelho: #060f46;
+        --verde: #435863;
+        --branco-gelo: #e6d0bdd2;
+        --branco-creme: #f6ebe2;
+        --preto: #333;
+        --fundo-claro: #eee;
+        --fundo-escuro: #121212;
+        --texto-claro: #000;
+        --texto-escuro: #fff;
+    }
+
+   *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "work sans", sans-serif;
+    }
+    
+    body {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('../img/Fundo Cadastro.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: -1;
+}
+
+    .wrapper {
+        width: 900px;
+        margin: 2% auto;
+        
+    }
+
+    .single-price {
+        width: 33%;
+        background-color: #69a0ece8;
+        float: left;
+        margin-top: 1rem;
+        box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.5);
+        text-align: center;
+        transition: 0.9s;
+        margin-bottom: 5rem;
+    }
+
+    .single-price h1 {
+        font-size: 18px;
+        color: #fff;
+        line-height: 3;
+        text-transform: uppercase;
+    }
+
+    .price {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 2px solid var(--verde);
+        margin: 5% auto 0 auto;
+        text-align: center;
+    }
+
+    .price h2 {
+        margin-top: 2.5rem;
+        font-size: 25px;
+        color: #fff;
+    }
+
+    .deals {
+        margin-top: 10%;
+        height: 6cm;
+    
+    }
+
+    .deals h4 {
+        font-size: 14px;
+        font-weight: normal;
+        text-align: justify;
+        color: #fff;
+        line-height: 1;
+        margin-right: 2rem;
+        margin-left: 2rem;
+  
+    }
+
+    .single-price:hover {
+        background: var(--verde);
+        color: #fff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 1);
+        transform: scale(1.05);
+        z-index: 1;
+        border-radius: 25px;
+    }
+
+    .single-price:hover .price {
+        border-color: #69a0ece8;
+    }
+
+    .single-price a {
+        text-decoration: none;
+        background: var(--verde);
+        color: #fff;
+        padding: 10px 60px;
+        display: inline-block;
+        margin: 10% auto;
+        border-radius: 20em;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    .single-price:hover a {
+        background-color: #69a0ece8;
+        color: #fff;
+    }
+    .home-btn{
+        position: fixed;
+        bottom: 20px;
+        right: 100px;
+        padding: 10px 20px;
+        background-color: var(--azul);
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    body.dark-mode {
+        background-color: var(--fundo-escuro);
+        color: var(--texto-escuro);
+        background-image: none;
+    }
+
+    body.dark-mode .single-price {
+        background-color: #333;
+    }
+
+    body.dark-mode .single-price:hover {
+        background: var(--preto);
+    }
+    body.dark-mode .single-price:hover .price{
+        border-color: #435863;
+    }
+
+    body.dark-mode .price {
+        border-color: #69a0ece8;
+    }
+
+    body.dark-mode .single-price a {
+        background: #69a0ece8;
+        color: var(--texto-escuro);
+    }
+
+    body.dark-mode .single-price:hover a {
+        background-color: var(--verde);
+        color: #fff;
+    }
+
+    #dark-mode-toggle {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        background-color: var(--azul);
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    </style>
+
+    <script>
+        const toggleButton = document.getElementById('dark-mode-toggle');
+        toggleButton.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+    </script>
+</body>
+</html> 

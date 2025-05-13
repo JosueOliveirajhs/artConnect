@@ -1,0 +1,335 @@
+<!DOCTYPE html> 
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/1c77068e3f.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="../img/logo2.png" type="image/x-icon">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>ArtConnect Pagamento</title>
+</head>
+<body>
+    <button id="dark-mode-toggle"><i class="fa-solid fa-moon"></i></button>
+    <a href="../index.html" class="home-btn"><i class="fa-solid fa-house"></i></a>
+
+    <div class="container">
+        <form id="paymentForm">
+            <div class="row">
+                <div class="column">
+                    <h3 class="title">Dados do Usuário</h3>
+                    <div class="input-box">
+                        <span>Nome Completo</span>
+                        <input type="text" name="full_name" placeholder="Digite seu nome completo" required>
+                    </div>
+                    <div class="input-box">
+                        <span>Email</span>
+                        <input type="email" name="email" placeholder="Digite seu email" required>
+                    </div>
+                    <div class="input-box">
+                        <span>CPF</span>
+                        <input type="text" name="cpf" placeholder="Digite seu CPF" required>
+                    </div>
+                    <div class="input-box">
+                        <span>Telefone</span>
+                        <input type="text" name="phone" placeholder="Digite seu telefone" required>
+                    </div>
+                    <div class="input-box">
+                        <span>CEP</span>
+                        <input type="text" name="cep" placeholder="Digite seu CEP" required>
+                    </div>
+                </div>
+                <div class="column">
+                    <h3 class="title">Pagamento</h3>
+                    <div class="input-box">
+                        <span>Cartões Aceitos</span>
+                        <img src="../img/cartoes.png" alt="">
+                    </div>
+                    <div class="input-box">
+                        <span>Nome no Cartão</span>
+                        <input type="text" name="card_name" placeholder="Digite o nome que está no cartão" required>
+                    </div>
+                    <div class="input-box">
+                        <span>Número do Cartão</span>
+                        <input type="number" name="card_number" placeholder="Digite o número que está no cartão" required>
+                    </div>
+                    <div class="input-box">
+                        <span>Data de Validade</span>
+                        <input type="month" name="expiry_date" required>
+                    </div>
+                    <div class="input-box">
+                        <span>CVV</span>
+                        <input type="text" name="cvv" placeholder="Digite o código de verificação" required>
+                    </div>
+                    <div class="input-box">
+                        <span>Escolha o Plano</span>
+                        <select name="plan" required>
+                            <option value="básico">Artista Básico - R$19,90</option>
+                            <option value="profissional">Artista Profissional - R$30,90</option>
+                            <option value="empresarial">Empresarial - R$129,90</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn" onclick="submitForm()">Enviar</button>
+        </form>
+    </div>
+    <script>
+async function submitForm() {
+    const form = document.getElementById('paymentForm');
+    const formData = new FormData(form);
+
+    // Validação dos campos obrigatórios
+    const requiredFields = [
+        { name: 'full_name', label: 'Nome Completo' },
+        { name: 'email', label: 'Email' },
+        { name: 'cpf', label: 'CPF' },
+        { name: 'phone', label: 'Telefone' },
+        { name: 'cep', label: 'CEP' },
+        { name: 'card_name', label: 'Nome no Cartão' },
+        { name: 'card_number', label: 'Número do Cartão' },
+        { name: 'expiry_date', label: 'Data de Validade' },
+        { name: 'cvv', label: 'CVV' },
+        { name: 'plan', label: 'Plano' }
+    ];
+
+    for (const field of requiredFields) {
+        const value = form[field.name]?.value.trim();
+        if (!value) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Atenção!',
+                text: `Por favor, preencha o campo "${field.label}".`
+            });
+            return;
+        }
+    }
+
+    // Validação específica para CPF (simples)
+    const cpf = form['cpf'].value.trim();
+    if (!/^\d{11}$/.test(cpf)) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Atenção!',
+            text: 'O CPF deve conter exatamente 11 números.'
+        });
+        return;
+    }
+
+    // Validação específica para número do cartão
+    const cardNumber = form['card_number'].value.trim();
+    if (!/^\d{16}$/.test(cardNumber)) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Atenção!',
+            text: 'O número do cartão deve conter exatamente 16 dígitos.'
+        });
+        return;
+    }
+
+    // Validação específica para CVV
+    const cvv = form['cvv'].value.trim();
+    if (!/^\d{3}$/.test(cvv)) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Atenção!',
+            text: 'O CVV deve conter exatamente 3 dígitos.'
+        });
+        return;
+    }
+
+    try {
+        // Envio dos dados ao servidor
+        const response = await fetch('submit_payment.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.status === 'success') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Sucesso!',
+                text: result.message
+            }).then(() => {
+                window.location.href = '../index.php';
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro!',
+                text: result.message
+            });
+        }
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro!',
+            text: 'Falha ao enviar os dados. Tente novamente.'
+        });
+        console.error('Erro no envio:', error);
+    }
+}
+
+
+        const toggleButton = document.getElementById('dark-mode-toggle');
+        toggleButton.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+    </script>
+
+    <style>
+        :root {
+            --azul: #191940;
+            --vermelho: #060f46;
+            --verde: #435863;
+            --branco-gelo: #e6d0bdd2;
+            --branco-creme: #f6ebe2;
+            --preto: #333;
+            --fundo-claro: #f6ebe2;
+            --fundo-escuro: #121212;
+            --texto-claro: #333;
+            --texto-escuro: #f6ebe2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'work sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--fundo-claro);
+            color: var(--texto-claro);
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: var(--branco-creme);
+            background-image: url(../img/bg-outrascoisas.jpg);
+            background-size: cover;
+            padding: 25px;
+        }
+
+        .container form {
+            width: 700px;
+            padding: 40px;
+            background: #69a0ece8;
+            border-radius: 10px;
+        }
+
+        form .row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .row .column {
+            flex: 1 1 250px;
+        }
+
+        .column .title {
+            font-size: 20px;
+            color: var(--branco-creme);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .column .input-box {
+            margin: 15px 0;
+        }
+
+        .input-box span {
+            display: block;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .input-box img {
+            height: 32px;
+            width: 13rem;
+            margin-top: 5px;
+        }
+
+        .btn {
+            display: flex;
+            justify-content: center;
+            width: 38.5rem;
+            padding: 12px;
+            background: var(--branco-creme);
+            border: none;
+            outline: none;
+            border-radius: 20em;
+            font-size: 17px;
+            color: #333;
+            margin-top: 5px;
+            cursor: pointer;
+            transition: 0.5s;
+            text-decoration: none;
+        }
+
+        .home-btn{
+        position: fixed;
+        bottom: 20px;
+        right: 100px;
+        padding: 10px 20px;
+        background-color: var(--azul);
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+        /* Estilos para o modo noturno */
+        body.dark-mode {
+            background-color: var(--fundo-escuro);
+            color: var(--texto-escuro);
+        }
+
+        body.dark-mode .container {
+            background-color: var(--fundo-escuro);
+            background-image: none;
+        }
+
+        body.dark-mode .container form {
+            background-color: var(--preto);
+        }
+
+        body.dark-mode .column .title,
+        body.dark-mode .input-box span {
+            color: var(--texto-escuro);
+        }
+
+        body.dark-mode .input-box input {
+            background-color: var(--texto-claro);
+            color: var(--preto);
+        }
+
+        #dark-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: var(--azul);
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+
+   
+</body>
+</html>

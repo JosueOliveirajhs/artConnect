@@ -1,0 +1,432 @@
+
+<?php
+session_start();
+require 'conexao.php'; // Inclua o arquivo de conexão com o banco de dados
+
+$usuario_logado = isset($_SESSION['usuario_id']);
+
+
+// Sanitiza o ID do usuário da sessão
+$usuario_id = filter_var($_SESSION['usuario_id'], FILTER_VALIDATE_INT);
+
+if (!$usuario_id) {
+    echo "Sessão inválida. Faça login novamente.";
+    session_destroy();
+    exit();
+}
+
+// Busca os dados do artista no banco
+$query = "SELECT nome, email, area, estilo, foto_perfil FROM artista WHERE id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param('i', $usuario_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$artista = $result->fetch_assoc();
+
+if (!$artista) {
+    echo "Artista não encontrado.";
+    exit();
+}
+?>
+<header class="header">
+        <nav class="navbar">
+            <a href="<?= BASE_URL ?>/index2.php">Home</a>
+            <a href="<?= BASE_URL ?>/Galeria/exibir2.php">Galeria</a>
+            <button onclick="redirectToMural()" class="calendario">Calendário</button>
+            <a href="<?= BASE_URL ?>/planos/previa_pagamento.html">Planos</a>
+            <a href="#aboutus">Sobre Nós</a>
+            <a href="#contact">Contato</a>
+            <div class="dropdown">
+                <button onclick="myFunction()" class="dropbtn">
+                    <?php if ($artista['foto_perfil']): ?>
+                        <img src="<?= $artista['foto_perfil'] ?>" alt="Foto de Perfil" width="100" height="100">
+                    <?php else: ?>
+                        <img src="path/to/default-photo.jpg" alt="Foto de Perfil Padrão" width="100" height="100">
+                    <?php endif; ?>
+                </button>
+                <div id="myDropdown" class="dropdown-content">
+                    <div class="user-info">
+                        <!-- Exibe a foto de perfil e o nome do artista -->
+                        <?php if ($artista['foto_perfil']): ?>
+                            <img src="<?= $artista['foto_perfil'] ?>" alt="Foto de Perfil" width="50" height="50">
+                        <?php else: ?>
+                            <img src="path/to/default-photo.jpg" alt="Foto de Perfil Padrão" width="50" height="50">
+                        <?php endif; ?>
+                        <h1><?= htmlspecialchars($artista['nome']) ?></h1>
+                    </div>
+                    <hr>
+                    <a href="./Home/perfil.php">
+                        <div class="edit-profile"><i class="fa-solid fa-user-gear"></i></div>
+                        <p>Edite seu Perfil</p>
+                    </a>
+                    <a href="./Galeria/upload.html">
+                        <div class="upload-profile"><i class="fa-solid fa-camera-retro"></i></div>
+                        <p>Poste sua Obra</p>
+                    </a>
+                    <a href="./eventos.php">
+                        <div class="upload-event"><i class="bi bi-box-arrow-up"></i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M3.5 6a.5.5 0 0 0-.5.5v8a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-8a.5.5 0 0 0-.5-.5h-2a.5.5 0 0 1 0-1h2A1.5 1.5 0 0 1 14 6.5v8a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 14.5v-8A1.5 1.5 0 0 1 3.5 5h2a.5.5 0 0 1 0 1z"/>
+  <path fill-rule="evenodd" d="M7.646.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 1.707V10.5a.5.5 0 0 1-1 0V1.707L5.354 3.854a.5.5 0 1 1-.708-.708z"/>
+</svg></div>
+                        <p>Publique seu Evento</p>
+                    </a>
+                    <a href="">
+                        <div class="acessibilidade-profile"><i class="fa-solid fa-universal-access"></i></div>
+                        <p>Acessibilidade</p>
+                    </a>
+                    <a href="#contact">
+                        <div class="help-profile"><i class="fa-solid fa-circle-info"></i></div>
+                        <p>Ajuda</p>
+                    </a>
+                    <a href="index.php">
+                        <div class="logout-profile"><i class="fa-solid fa-right-to-bracket"></i></div>
+                        <p>LogOut</p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        <a href="" class="logo"><img src="./img/logo3.png" /></a>
+    </header>
+
+    const gallery = document.getElementById('gallery');
+    const usuarioLogado = <?= json_encode($usuario_logado) ?>;
+
+    let currentIndex = 0; // Índice atual da obra exibida
+    let artworks = []; // Lista de obras carregadas
+
+    // Função para carregar a galeria de obras
+    function loadGallery() {
+        fetch('./Galeria/upload.php')
+            .then(response => response.json())
+            .then(data => {
+                artworks = data; // Salva as obras no array
+                if (artworks.length > 0) {
+                    displayArtwork(currentIndex); // Exibe a primeira obra
+                } else {
+                    gallery.innerHTML = '<p>Nenhuma obra encontrada.</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao carregar a galeria:', error);
+                gallery.innerHTML = '<p>Erro ao carregar a galeria.</p>';
+            });
+    }
+
+    function displayArtwork(index) {
+    if (artworks.length > 0) {
+        gallery.innerHTML = ''; // Limpa o conteúdo anterior
+
+        // Exibe 3 obras começando do índice atual
+        for (let i = 0; i < 3; i++) {
+            const currentIndex = (index + i) % artworks.length; // Garantir que o índice esteja dentro do limite
+            const post = artworks[currentIndex];
+            const postElement = document.createElement('div');
+            postElement.classList.add('post');
+            postElement.innerHTML = `
+             <a href="exibir.php" class="post-link">
+                <p><strong>Autor:</strong> ${post.autor}</p>
+                <img src="${post.imagem}" alt="Obra de arte">
+                <p><strong>Descrição:</strong> ${post.descricao}</p>
+            `;
+            gallery.appendChild(postElement);
+        }
+    }
+}
+
+// Atualiza as funções de navegação
+function showNextArtwork() {
+    if (artworks.length > 0) {
+        currentIndex = (currentIndex + 3) % artworks.length; // Avança 3 índices
+        displayArtwork(currentIndex);
+    }
+}
+
+function showPrevArtwork() {
+    if (artworks.length > 0) {
+        currentIndex = (currentIndex - 3 + artworks.length) % artworks.length; // Retrocede 3 índices
+        displayArtwork(currentIndex);
+    }
+}
+
+    // Eventos dos botões de navegação
+    document.getElementById('next').addEventListener('click', showNextArtwork);
+    document.getElementById('prev').addEventListener('click', showPrevArtwork);
+
+    // Carrega a galeria ao iniciar
+    window.addEventListener('DOMContentLoaded', loadGallery);
+
+        // Carrega a galeria ao iniciar
+        window.addEventListener('DOMContentLoaded', loadGallery);
+
+
+
+        
+        // Função para carregar mensagens
+        function loadMessages() {
+            fetch('chat.php')
+                .then(response => response.json())
+                .then(messages => {
+                    const chatMessages = document.getElementById('chatMessages');
+                    chatMessages.innerHTML = '';
+                    messages.reverse().forEach(message => {
+                        const messageDiv = document.createElement('div');
+                        messageDiv.classList.add('chat-message');
+                        messageDiv.innerHTML = `<strong>${message.usuario}</strong>: ${message.mensagem}`;
+                        chatMessages.appendChild(messageDiv);
+                    });
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                })
+                .catch(error => console.error('Erro ao carregar mensagens:', error));
+        }
+
+        // Garante que o código execute somente após o carregamento completo do DOM
+document.addEventListener('DOMContentLoaded', function() {
+    // Função para enviar uma mensagem
+
+
+    
+    function sendMessage() {
+            const usuarioInput = document.getElementById('usuarioInput');
+            const messageInput = document.getElementById('messageInput');
+
+            const usuario = usuarioInput.value.trim();
+            const mensagem = messageInput.value.trim();
+
+            if (usuario && mensagem) {
+                fetch('chat.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `usuario=${encodeURIComponent(usuario)}&mensagem=${encodeURIComponent(mensagem)}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        messageInput.value = ''; // Limpa o campo de mensagem
+                        loadMessages(); // Atualiza a lista de mensagens
+                    } else {
+                        console.error('Erro ao enviar mensagem:', data.message);
+                    }
+                })
+                .catch(error => console.error('Erro ao enviar mensagem:', error));
+            }
+        }
+
+        document.getElementById('chatIcon').addEventListener('click', toggleChat);
+        document.getElementById('sendButton').addEventListener('click', sendMessage);
+        
+        
+    // Função para carregar as mensagens do chat
+    function loadMessages() {
+        fetch('chat.php')
+            .then(response => response.json())
+            .then(messages => {
+                const chatMessages = document.getElementById('chatMessages');
+                chatMessages.innerHTML = '';
+                messages.reverse().forEach(message => {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.classList.add('chat-message');
+                    messageDiv.innerHTML = `<strong>${message.usuario}</strong>: ${message.mensagem}`;
+                    chatMessages.appendChild(messageDiv);
+                });
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            })
+            .catch(error => console.error('Erro ao carregar mensagens:', error));
+    }
+
+    // Carrega as mensagens a cada 5 segundos para atualização em tempo real
+    setInterval(loadMessages, 5000);
+});
+
+
+
+
+        const toggleButton = document.getElementById('dark-mode-toggle');
+        toggleButton.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            document.querySelector('.header').classList.toggle('dark-mode');
+            document.querySelectorAll('.navbar a').forEach(link => {
+                link.classList.toggle('dark-mode');
+            });
+            document.querySelectorAll('.home').forEach(link => {
+                link.classList.toggle('dark-mode');
+            });
+            document.querySelectorAll('.contact').forEach(link => {
+                link.classList.toggle('dark-mode');
+            });
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.classList.toggle('dark-mode');
+            });
+            document.querySelectorAll('.aboutus .right h1').forEach(title => {
+                title.classList.toggle('dark-mode');
+            });
+            document.querySelector('.footer').classList.toggle('dark-mode');
+            document.querySelectorAll('.contact-info i').forEach(icon => {
+                icon.classList.toggle('dark-mode');
+            });
+            document.querySelectorAll('.contact-info p').forEach(text => {
+                text.classList.toggle('dark-mode');
+            });
+            document.querySelectorAll('.bnt-about').forEach(text => {
+                text.classList.toggle('dark-mode');
+            });
+            document.querySelectorAll('#text-container p').forEach(text => {
+                text.classList.toggle('dark-mode');
+            });
+            document.querySelectorAll('.texto1 ').forEach(text => {
+                text.classList.toggle('dark-mode');
+            });
+            document.querySelectorAll('.texto').forEach(text => {
+                text.classList.toggle('dark-mode');
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('contactForm').addEventListener('submit', function(event) {
+                event.preventDefault();  // Previne o comportamento padrão do formulário
+
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const message = document.getElementById('message').value;
+
+                // Verificar se os campos estão preenchidos
+                if (name && email && message) {
+                    fetch('processa_contato.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&message=${encodeURIComponent(message)}`
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            Swal.fire("Sucesso!", data.message, "success").then(() => {
+                                window.location.href = "index.php"; // Redireciona após sucesso
+                            });
+                        } else {
+                            Swal.fire("Erro!", data.message, "error");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                        Swal.fire("Erro!", "Ocorreu um erro ao enviar a mensagem.", "error");
+                    });
+                } else {
+                    Swal.fire("Atenção!", "Por favor, preencha todos os campos corretamente.", "warning");
+                }
+            });
+        });
+
+   // Função para mostrar ou ocultar o dropdown
+function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Fechar o dropdown se o usuário clicar fora dele
+window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn') && !event.target.closest('.dropbtn')) {
+        let dropdowns = document.getElementsByClassName("dropdown-content");
+        for (let i = 0; i < dropdowns.length; i++) {
+            let openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+}
+
+function toggleText() {
+            const textContainer = document.getElementById("text-container");
+            const icon = document.getElementById("icon");
+
+            // Alterna a classe 'show' para o container de texto
+            textContainer.classList.toggle("show");
+
+            // Alterna a classe 'rotate' para rotacionar o ícone
+            icon.classList.toggle("rotate");
+        }
+   
+
+
+
+
+
+        // Função para mostrar ou ocultar o dropdown
+function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Fechar o dropdown se o usuário clicar fora dele
+window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn') && !event.target.closest('.dropbtn')) {
+        let dropdowns = document.getElementsByClassName("dropdown-content");
+        for (let i = 0; i < dropdowns.length; i++) {
+            let openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+}
+        
+    // Função para carregar as mensagens do chat
+    function loadMessages() {
+        fetch('chat.php')
+            .then(response => response.json())
+            .then(messages => {
+                const chatMessages = document.getElementById('chatMessages');
+                chatMessages.innerHTML = '';
+                messages.reverse().forEach(message => {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.classList.add('chat-message');
+                    messageDiv.innerHTML = `<strong>${message.usuario}</strong>: ${message.mensagem}`;
+                    chatMessages.appendChild(messageDiv);
+                });
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            })
+            .catch(error => console.error('Erro ao carregar mensagens:', error));
+    }
+
+    // Carrega as mensagens a cada 5 segundos para atualização em tempo real
+    setInterval(loadMessages, 5000);
+});
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('contactForm').addEventListener('submit', function(event) {
+                event.preventDefault();  // Previne o comportamento padrão do formulário
+
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const message = document.getElementById('message').value;
+
+                // Verificar se os campos estão preenchidos
+                if (name && email && message) {
+                    fetch('processa_contato.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&message=${encodeURIComponent(message)}`
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            Swal.fire("Sucesso!", data.message, "success").then(() => {
+                                window.location.href = "index.php"; // Redireciona após sucesso
+                            });
+                        } else {
+                            Swal.fire("Erro!", data.message, "error");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                        Swal.fire("Erro!", "Ocorreu um erro ao enviar a mensagem.", "error");
+                    });
+                } else {
+                    Swal.fire("Atenção!", "Por favor, preencha todos os campos corretamente.", "warning");
+                }
+            });
+        });

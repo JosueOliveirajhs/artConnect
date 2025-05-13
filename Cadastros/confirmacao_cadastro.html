@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../img/logo2.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.1/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="confirmacao.css"> <!-- Se você tiver um CSS personalizado -->
+    <title>Confirmação de Cadastro - ArtConnect</title>
+</head>
+<body>
+    <main class="container">
+        <h1>Cadastro Realizado com Sucesso!</h1>
+        <p>Seu cadastro foi realizado com sucesso. Agora você pode acessar sua conta e explorar todas as funcionalidades.</p>
+        <button onclick="location.href='login.php'" class="login">Ir para Login</button>
+    </main>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5; /* Altere conforme necessário */
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .login {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50; /* Verde */
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .login:hover {
+            background-color: #45a049; /* Verde mais escuro */
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/1c77068e3f.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="./img/logo2.png" type="image/x-icon">
+    <title>ArtConnect</title>
+    <!-- Carregar SweetAlert2 -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        :root {
+            --azul: #191940;
+            --vermelho: #060f46;
+            --verde: #435863;
+            --branco-gelo: #e6d0bdd2;
+            --branco-creme: #f6ebe2;
+            --preto: #333;
+        }
+        body.dark-mode {
+            background-color: #121212; /* Cor de fundo escura */
+            background-image: none;
+            color: #e0e0e0; /* Cor do texto clara */
+        }
+
+        .header.dark-mode {
+            background-image: none; /* Remover a imagem de fundo, se necessário */
+            background-color: var(--azul); /* Cor de fundo para o cabeçalho no modo escuro */
+        }
+
+        .navbar a.dark-mode {
+            color: #e0e0e0; /* Cor dos links no modo escuro */
+        }
+
+        .navbar a.dark-mode:hover {
+            color: #e0e0e0; /* Cor dos links ao passar o mouse */
+        }
+
+        .home.dark-mode{
+            background-image: url(./img/bg-home-me.jpg);
+            background-color: #2c2c2c;
+            color: #fff;
+        }
+
+        .btn.dark-mode {
+            background-color: #2c2c2c; /* Cor do botão no modo escuro */
+            color: #fff; /* Cor do texto no botão */
+            border: 1px solid #444; /* Cor da borda no modo escuro */
+        }
+
+        .aboutus .right h1.dark-mode {
+            color: #e0e0e0; /* Cor do título no modo escuro */
+        }
+        #text-container p.dark-mode{
+            color: #fff;
+        }
+        .bnt-about.dark-mode{
+            color: #fff;
+        }
+        .contact.dark-mode{
+            background-image: url(./img/bg-contact-me.jpg);
+            background-color: #2c2c2c;
+        }
+
+        .footer.dark-mode {
+            background-color: var(--azul); /* Cor de fundo do rodapé no modo escuro */
+            color: #e0e0e0; /* Cor do texto no rodapé */
+        }
+
+        .contact-info.dark-mode i {
+            color: #e0e0e0; /* Cor dos ícones no modo escuro */
+        }
+
+        /* Outros elementos */
+        .contact-info.dark-mode p {
+            color: #e0e0e0; /* Cor do texto no modo escuro */
+        }
+
+        .texto.dark-mode {
+            color: #e0e0e0; /* Cor do texto em seções específicas no modo escuro */
+        }
+        .texto1.dark-mode {
+            color: #e0e0e0; /* Cor do texto em seções específicas no modo escuro */
+        }
+
+
+        /* Todo o site */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            border: none;
+            outline: none;
+            font-family: 'work sans', sans-serif;
+            text-decoration: none;
+            text-transform: none;
+            font-style: normal;
+            transition: all 0.5s ease-in;
+            scroll-behavior: smooth;
+            scroll-padding-top: 16vh;
+        }
+
+        html {
+            font-size: 62.5%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--branco-gelo);
+        }
+
+        section {
+            padding: 2rem 7%;
+        }
+
+        /* Cabeçalho */
+        .header {
+            background-image: url(./img/heather-bg.jpg);
+            display: flex;
+            justify-content: space-evenly;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 16vh;
+            z-index: 1000;
+        }
+
+        .header .logo img {
+            padding: 1px;
+            margin-top: -115px;
+            margin-left: -100px;
+            margin-bottom: 10rem;
+            height: 32rem;
+        }
+
+        nav {
+            margin-top: 4rem;
+            margin-left: 150px;
+        }
+
+        .header .navbar a {
+            justify-content: flex-end;
+            color: white;
+            font-size: 1.8rem;
+            margin: 10px 30px 0 0;
+        }
+
+        .header .navbar a:hover {
+            color: var(--vermelho);
+            border-top: 0.2rem solid var(--vermelho);
+            border-bottom: 0.2rem solid var(--vermelho);
+            padding-top: 0.3rem;
+            padding-bottom: 0.3rem;
+        }
+
+        .header .icons {
+            display: flex;
+            margin-top: 20px;
+            margin-left: -50px;
+        }
+
+        .header .icons div {
+            color: white;
+            cursor: pointer;
+            font-size: 2.5rem;
+        }
+        .header .menu-icon{
+            display: none;
+        }
+
+        .header .icons div:hover {
+            color: var(--vermelho);
+        }
+
+        /* Home section starts */
+        .home {
+            display: flex;
+            align-items: center;
+            min-height: 90vh;
+            margin-top: -3vh;
+            margin-bottom: -7.3vh;
+            background-color: var(--branco-creme);
+            background-image: url(./img/bg-home.png);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: right;
+        }
+
+        .home .hero {
+            width: 60rem;
+            margin-left: -2rem;
+        }
+
+        .texto {
+            margin-top: 0.2rem;
+            margin-left: 5.2rem;
+            font-family: 'work sans', sans-serif;
+            cursor: default;
+            font-size: 2rem;
+            line-height: 2.5rem;
+            padding: 1rem 0;
+            color: var(--verde);
+        }
+
+        .texto1 {
+            margin-top: 30rem;
+            font-family: 'work sans', sans-serif;
+            cursor: default;
+            font-size: 6rem;
+            margin-left: 5rem;
+            text-transform: uppercase;
+            color: var(--verde);
+            font-weight: bolder;
+        }
+
+        .btn {
+            display: inline-block;
+            font-size: 1.7rem;
+            padding: 0.8rem 2.5rem;
+            margin-top: 1rem;
+            margin-left: 5rem;
+            margin-right: 15px;
+            outline: none;
+            border: 1px solid var(--vermelho);
+            border-radius: 20px;
+            cursor: pointer;
+            color: var(--vermelho);
+            background: transparent;
+        }
+
+        .btn:hover {
+            background-color: var(--verde);
+            border: 1px solid var(--verde);
+            color: #fff;
+        }
+
+        .aboutus {
+            background-color: var(--bg-color);
+            display: flex;
+            margin-bottom: 3rem;
+            justify-content: flex-end;
+        }
+
+        .aboutus .left img {
+            margin-top: 7rem;
+            margin-left: 5rem;
+            margin-right: 2.5rem;
+            height: 47.9rem;
+            width: 40rem;
+        }
+
+        .aboutus .right h1 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            text-transform: none;
+            cursor: default;
+            font-weight: lighter;
+            color: var(--vermelho);
+            font-size: 3.3rem;
+            font-style: italic;
+            margin-top: 8rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .aboutus .right img {
+            margin-right: 3rem;
+            margin-left: 0.4rem;
+            margin-top: 4rem;
+            height: 20rem;
+            width: 15.5rem;
+        }
+
+        #text-container {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s ease-out, opacity 0.5s ease-out;
+            opacity: 0;
+        }
+
+        #text-container.show {
+            max-height: 150px;
+            opacity: 1;
+        }
+
+        #text-container p {
+            font-family: 'work sans', sans-serif;
+            text-align: justify;
+            margin-top: 1rem;
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .bnt-about {
+            display: flex;
+            align-items: center;
+            margin-top: -1rem;
+            padding: 10px 20px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            background-color: transparent;
+            color: var(--azul);
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .bnt-about:hover {
+            background-color: transparent;
+        }
+
+        .bnt-about i {
+            margin-left: 10px;
+            transition: transform 0.7s ease;
+        }
+
+        /* Rotaciona o ícone quando o texto estiver visível */
+        .rotate {
+            transform: rotate(180deg);
+        }
+
+        .contact {
+            background-image: url(./img/bg-contact.png);
+            min-height: 70vh;
+            background-color: var(--branco-creme);
+            padding: 50px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .container h2 {
+            font-size: 36px;
+            font-family: 'work sans', sans-serif;
+            margin-bottom: 40px;
+            color: var(--verde);
+        }
+
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 50px;
+        }
+
+        .contact-form {
+            text-align: left;
+        }
+
+        .contact-form h3 {
+            font-family: 'work sans', sans-serif;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--verde);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .contato, input, textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            background-color: var(--branco-gelo);
+            color: var(--preto);
+        }
+
+        .contato, input:focus, 
+        textarea:focus {
+            outline: none;
+            box-shadow: 0 0 8px #bbb;
+        }
+
+        button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--verde);
+            color: #fff;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--vermelho);
+        }
+
+        .contact-info {
+            text-align: left;
+        }
+
+        .contact-info h3 {
+            font-family: 'work sans', sans-serif;
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: var(--verde);
+        }
+
+        .contact-info p {
+            font-family: 'work sans', sans-serif;
+            font-size: 1.7rem;
+            margin-bottom: 10px;
+            color: var(--verde);
+        }
+
+        .contact-info i {
+            color: var(--vermelho);
+            margin-right: 10px;
+        }
+
+        .contact-info .social-media {
+            padding: 1rem 0;
+            margin-top: -2rem;
+        }
+
+        .contact-info .social-media a {
+            height: 5rem;
+            width: 5rem;
+            border-radius: 50%;
+            line-height: 5rem;
+            font-size: 2rem;
+            color: var(--vermelho);
+            border: var(--border);
+            margin: 0.5rem;
+        }
+
+        .contact-info .social-media a:hover {
+            color: var(--verde);
+        }
+
+        footer {
+            background-color: var(--vermelho);
+            text-align: center;
+        }
+
+        .footer .links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 2rem;
+            gap: 1rem;
+        }
+
+        .footer .links a {
+            padding: 0.8rem 2.5rem;
+            margin-top: 1rem;
+            margin-right: 15px;
+            background-color: var(--vermelho);
+            border-radius: 20px;
+            padding: 7px 30px;
+            color: #fff;
+            border: 1px solid var(--vermelho);
+            font-size: 2rem;
+        }
+
+        .footer .links a:hover {
+            border: 20rem;
+            border-radius: 20px;
+            background-color: var(--verde);
+            cursor: pointer;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .footer .credits {
+            font-size: 1.7rem;
+            color: var(--branco-gelo);
+            font-weight: normal;
+            padding: 1.5rem;
+        }
+
+        .footer .credits span {
+            color: var(--branco-creme);
+        }
+
+        #dark-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: var(--azul);
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        
+        /* Estilos para o modo escuro */
+       
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <a href="" class="logo"><img src="./img/logo3.png" /></a>
+        <nav class="navbar">
+            <a href="#home">Home</a>
+            <a href="exibir.php">Galeria</a>
+            <a href="mural.html">Calendário</a>
+            <a href="planos/planos.html">Planos</a>
+            <a href="#aboutus">Sobre Nós</a>
+            <a href="#contact">Contato</a>
+        </nav>
+        <div class="icons">
+            <button id="dark-mode-toggle"><i class="fa-solid fa-moon"></i></button>
+            <div class="menu-icon"><i class="fa-solid fa-bars"></i></div>
+        </div>
+    </header>
+
+    <section class="home" id="home">
+        <div class="hero">
+            <h3 class="texto1">Bem vindo(a)!</h3>
+            <p class="texto">Explore as obras de todo o Brasil.</p>
+        </div>
+    </section>
+
+    <section>
+        <div class="aboutus" id="aboutus">
+            <div class="left">
+                <img src="./img/aboutus04.jpg">
+            </div>
+            <div class="right">
+                <h1>Conheça nossa equipe</h1>
+                <div>
+                    <button onclick="toggleText()" class="bnt-about">Mostrar mais
+                        <i id="icon" class="fa-solid fa-caret-down"></i></button>
+                    <div id="text-container">
+                        <p>Nos últimos anos, o cenário das artes independentes vem ganhando força na sociedade contemporânea, com os avanços das redes sociais e das plataformas online tornando esse conteúdo mais acessível ao público. Ainda assim, existe uma desinformação e uma falta de acessibilidade a esse mercado, principalmente para artistas independentes que procuram partilhar as suas obras. Nesse contexto, nós desenvolvemos um site artístico para exposição e valorização de artistas independentes se torna fundamental para que todos tenham a oportunidade de divulgar e apreciar diferentes formas de arte.</p>
+                    </div>
+                </div>
+                <div class="right-img">
+                    <img src="./img/aboutus01.jpg" alt="">
+                    <img src="./img/aboutus02.jpg" alt="">
+                    <img src="./img/aboutus03.jpg" alt="">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2>Contato</h2>
+            <div class="contact-wrapper">
+                <div class="contact-form">
+                    <h3>Nos mande uma mensagem</h3>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input class="contato" type="text" id="name" name="name" placeholder="Digite seu nome" required>
+                        </div>
+                        <div class="form-group">
+                            <input class="contato" type="email" id="email" name="email" placeholder="Digite seu email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea name="message" id="message" placeholder="Digite sua mensagem" required></textarea>
+                        </div>
+                        <button type="submit">Enviar mensagem</button>
+                    </form>
+                </div>
+                <div class="contact-info">
+                    <h3>Informações para Contato</h3>
+                    <p><i class="fa-solid fa-phone"></i>55 (81) 91234-5678</p>
+                    <p><i class="fa-solid fa-envelope"></i>artconnect.site@gmail.com</p>
+                    <div class="social-media">
+                        <a href="" class="fab fa-whatsapp"></a>
+                        <a href="" class="fab fa-twitter"></a>
+                        <a href="" class="fab fa-instagram"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="links">
+            <a href="#home">Home</a>
+            <a href="exibir.php">Galeria</a>
+            <a href="mural.html">Calendário</a>
+            <a href="#aboutus">About us</a>
+            <a href="#contact">Contato</a>
+        </div>
+        <div class="credits">
+            created by <span> &copy; 2024 ArteConnect</span> | all rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        const toggleButton = document.getElementById('dark-mode-toggle');
+        toggleButton.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            document.querySelector('.header').classList.toggle('dark-mode');
+            document.querySelectorAll('.navbar a').forEach(link => {
+                link.classList.toggle('dark-mode');
+            });
+            document.querySelectorAll('.home').forEach(link => {
+                link.classList.toggle('dark-mode');
+            });
+            document.querySelectorAll('.contact').forEach(link => {
+                link.classList.toggle('dark-mode');
+            });
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.classList.toggle('dark-mode');
+            });
+            document.querySelectorAll('.aboutus .right h1').forEach(title => {
+                title.classList.toggle('dark-mode');
+            });
+            document.querySelector('.footer').classList.toggle('dark-mode');
+            document.querySelectorAll('.contact-info i').forEach(icon => {
+                icon.classList.toggle('dark-mode');
+            });
+            document.querySelectorAll('.contact-info p').forEach(text => {
+                text.classList.toggle('dark-mode');
+            });
+            document.querySelectorAll('.bnt-about').forEach(text => {
+                text.classList.toggle('dark-mode');
+            });
+            document.querySelectorAll('#text-container p').forEach(text => {
+                text.classList.toggle('dark-mode');
+            });
+            document.querySelectorAll('.texto1 ').forEach(text => {
+                text.classList.toggle('dark-mode');
+            });
+            document.querySelectorAll('.texto').forEach(text => {
+                text.classList.toggle('dark-mode');
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('contactForm').addEventListener('submit', function(event) {
+                event.preventDefault();  // Previne o comportamento padrão do formulário
+
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const message = document.getElementById('message').value;
+
+                // Verificar se os campos estão preenchidos
+                if (name && email && message) {
+                    fetch('processa_contato.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&message=${encodeURIComponent(message)}`
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            Swal.fire("Sucesso!", data.message, "success").then(() => {
+                                window.location.href = "index.html"; // Redireciona após sucesso
+                            });
+                        } else {
+                            Swal.fire("Erro!", data.message, "error");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                        Swal.fire("Erro!", "Ocorreu um erro ao enviar a mensagem.", "error");
+                    });
+                } else {
+                    Swal.fire("Atenção!", "Por favor, preencha todos os campos corretamente.", "warning");
+                }
+            });
+        });
+
+        function toggleText() {
+            const textContainer = document.getElementById("text-container");
+            const icon = document.getElementById("icon");
+
+            // Alterna a classe 'show' para o container de texto
+            textContainer.classList.toggle("show");
+
+            // Alterna a classe 'rotate' para rotacionar o ícone
+            icon.classList.toggle("rotate");
+        }
+    </script>
+</body>
+</html>
